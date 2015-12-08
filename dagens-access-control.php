@@ -4,7 +4,7 @@
 Plugin Name: Dagens Access Control
 Plugin URI: http://www.retrofitter.dk
 Description: Adds possibility to control which users can access content.
-Version: 1.0
+Version: 1.0.1
 Author: Steffen Bang Nielsen
 Author URI: http://www.retrofitter.dk
 License: GPL2
@@ -55,7 +55,7 @@ if ( ! function_exists( 'dagens_access_user_info' ) ) :
 		$user_access_way = UserAccessWay();
 		$user_type = UserInfo();
 		?>
-		<div id="user-info" class="plugin-test">
+		<div id="user-info" class="hide">
 			<p class="referer">
 				<a href="<?php echo esc_url( $userref ); ?>">Referer=<?php echo esc_url( $userref ); ?></a>
 			</p>
@@ -77,7 +77,9 @@ if ( ! function_exists( 'dagens_access_user_info' ) ) :
 			<p class="remote-ip">
 				remote-ip=<?php echo $_SERVER["REMOTE_ADDR"]; ?>
 			</p>
-
+			<p class="remote-agent">
+				remote-agent=<?php echo $_SERVER["HTTP_USER_AGENT"]; ?>
+			</p>
 		</div>
 		<?php
 	}
@@ -108,7 +110,7 @@ function UserInfo() {
 
 	if ( current_user_can( 'read_posts' ) ) {
 		$useraccess = 'subscriber';
-	} elseif ( $the_ip == '77.243.35.138' ) {
+	} elseif ( $the_ip == '85.81.93.191' ) {
 		$useraccess = 'company';
 	} elseif ( $user_access_way == 'google' || $user_access_way == 'facebook' || $user_access_way == 'twitter' || $user_access_way == 'linkedin' ) {
 		$useraccess = 'social';
@@ -122,7 +124,11 @@ function UserInfo() {
 function UserAccessWay()
 {
 	$user_ref = getref();
+	$user_agent = getagent();
 
+	if (strpos($user_agent, 'googlebot') !== false) {
+		$accessway = 'google';
+	}
 	if (strpos($user_ref, 'google.') !== false) {
 		$accessway = 'google';
 	}
@@ -130,6 +136,9 @@ function UserAccessWay()
 		$accessway = 'facebook';
 	}
 	if (strpos($user_ref, 'twitter.') !== false) {
+		$accessway = 'twitter';
+	}
+	if (strpos($user_ref, 't.co') !== false) {
 		$accessway = 'twitter';
 	}
 	if (strpos($user_ref, 'linkedin.') !== false) {
@@ -151,4 +160,9 @@ function getip(){
 function getref() {
 	$userref = $_SERVER['HTTP_REFERER'];
 	return $userref;
+}
+
+function getagent() {
+	$useragent = $_SERVER['HTTP_USER_AGENT'];
+	return $useragent;
 }
