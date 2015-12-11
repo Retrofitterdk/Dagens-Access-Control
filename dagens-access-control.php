@@ -4,7 +4,7 @@
 Plugin Name: Dagens Access Control
 Plugin URI: http://www.retrofitter.dk
 Description: Adds possibility to control which users can access content.
-Version: 1.0.1
+Version: 0.2-alpha
 Author: Steffen Bang Nielsen
 Author URI: http://www.retrofitter.dk
 License: GPL2
