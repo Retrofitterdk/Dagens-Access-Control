@@ -90,6 +90,8 @@ function dagens_access_control( $template ) {
 
 	$user_type = UserInfo();
 
+// Examples below is just a hardcoded paths to templates - a better approach would be to fetch them from plugin settings
+
 	if ( is_single() && ! current_user_can( 'read_posts' ) && ! has_post_format( array( 'aside', 'link' ) ) ) {
 		if ($user_type == 'company') {
 			$new_template = locate_template( array( 'single-company-access.php' ) );
@@ -110,7 +112,8 @@ function UserInfo() {
 
 	if ( current_user_can( 'read_posts' ) ) {
 		$useraccess = 'subscriber';
-	} elseif ( $the_ip == '85.81.93.191' ) {
+// this is just a hardcoded example of an ip-address - should be provided from custom field in Woocommerce Subscriptions
+	} elseif ( $the_ip == '10.0.1.1' ) {
 		$useraccess = 'company';
 	} elseif ( $user_access_way == 'google' || $user_access_way == 'facebook' || $user_access_way == 'twitter' || $user_access_way == 'linkedin' ) {
 		$useraccess = 'social';
@@ -125,6 +128,8 @@ function UserAccessWay()
 {
 	$user_ref = getref();
 	$user_agent = getagent();
+
+// Examples below is just a hardcoded social domains - a better approach would be to fetch them from plugin settings
 
 	if (strpos($user_agent, 'googlebot') !== false) {
 		$accessway = 'google';
